@@ -2,11 +2,11 @@ package obabic.cipher;
 
 public class KeywordCipher extends MonoAlphabeticCipher{
 	
-	public KeywordCipher(String keyWord) throws SecAlphception {
+	public KeywordCipher(String keyWord){
 		this.newAlph(keyWord);
 	}
 
-	private void newAlph(String keyWord) throws SecAlphception{
+	public void newAlph(String keyWord){
 		keyWord = keyWord.toLowerCase();
 		String finishedAlph = "";
 		

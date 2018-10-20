@@ -5,7 +5,11 @@ public class TranspositionCipher implements Cipher{
 	private int transpositionLevel;
 
 	public TranspositionCipher(int transpositionLevel) {
-		this.transpositionLevel = transpositionLevel;
+		if (transpositionLevel >= 1) {
+			this.transpositionLevel = transpositionLevel;
+		}else {
+			this.transpositionLevel = 1;
+		}
 	}
 
 	public void setTranspositionLevel(int transpositionLevel) {
