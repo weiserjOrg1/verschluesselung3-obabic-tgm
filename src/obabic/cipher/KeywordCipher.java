@@ -1,57 +1,83 @@
 package obabic.cipher;
 
 public class KeywordCipher extends MonoAlphabeticCipher{
-
-	private String keyWord;
-	private String nAlph;
 	
-	public KeywordCipher(String keyWord) {
-		super();
-		this.nAlph = "";
-		this.setKeyWord(keyWord);
-		this.makeAlph();
+	public KeywordCipher(String keyWord) throws SecAlphception {
+		this.newAlph(keyWord);
 	}
 
-	private void makeAlph() {
-		String secretAlph = "";
-		String help1 = "";
-		this.keyWord = this.keyWord.toLowerCase();
+	private void newAlph(String keyWord) throws SecAlphception{
+		keyWord = keyWord.toLowerCase();
+		String finishedAlph = "";
 		
-		while(true) {
-			if(checkDuplicateChars(this.keyWord)) break;
+		for (int i = 0; i < keyWord.length(); i++) {
+			boolean used = false;
+			for (int j = 0; j < finishedAlph.length(); j++) {
+				if (finishedAlph.charAt(j) == keyWord.charAt(i))
+					used = true;
+			}
+			if (!used) {
+				switch (keyWord.charAt(i)) {
+				case 'ä':
+					finishedAlph += 'ä';
+					break;
+				case 'ö':
+					finishedAlph += 'ö';
+					break;
+				case 'ü':
+					finishedAlph += 'ü';
+					break;
+				case 'ß':
+					finishedAlph += 'ß';
+					break;
+				default:
+					if (keyWord.charAt(i) >= 97 && keyWord.charAt(i) <= 122)
+						finishedAlph += keyWord.charAt(i);
+				}
+			}
 		}
-		secretAlph = this.keyWord + this.changedAlph();
-		super.setSecretAlphabet(secretAlph);
+		int keywordLength = finishedAlph.length();
+		for (int i = 0; i < 30; i++) {
+			boolean verwendet = false;
+			char nextLetter = (char) (97 + i);
+			switch (nextLetter) {
+			case 123:
+				nextLetter = 'ä';
+				break;
+			case 124:
+				nextLetter = 'ö';
+				break;
+			case 125:
+				nextLetter = 'ü';
+				break;
+			case 126:
+				nextLetter = 'ß';
+				break;
+			}
+			for (int j = 0; j < keywordLength; j++) {
+				if (nextLetter == finishedAlph.charAt(j))
+					verwendet = true;
+			}
+			if (!verwendet) {
+				switch (nextLetter) {
+				case 123:
+					finishedAlph += 'ä';
+					break;
+				case 124:
+					finishedAlph += 'ö';
+					break;
+				case 125:
+					finishedAlph += 'ü';
+					break;
+				case 126:
+					finishedAlph += 'ß';
+					break;
+				default:
+					finishedAlph += nextLetter;
+				}
+			}
+		}
+		super.setSecretAlphabet(finishedAlph);
 	}
-
-	private String changedAlph() {
-		return null;
-	}
-
-	public String getNAlph() {
-		return nAlph;
-	}
-
-	public void setNAlph(String nAlph) {
-		this.nAlph = nAlph;
-	}
-
-	public String getKeyWord() {
-		return keyWord;
-	}
-
-	private void setKeyWord(String keyWord) {
-		this.keyWord = keyWord;
-	}
-	
-	public static boolean checkDuplicateChars(CharSequence g) {
-	    for (int i = 0; i < g.length(); i++) {
-	        for (int j = i + 1; j < g.length(); j++) {
-	            if (g.charAt(i) == g.charAt(j)) {
-	                return true;
-	            }
-	        }
-	    }
-	    return false;
-	}
+		
 }
